@@ -1,0 +1,34 @@
+{
+  "files": {
+    "main.css": "/kyusitrip-frontend/static/css/main.f4625d26.css",
+    "main.js": "/kyusitrip-frontend/static/js/main.2db464bc.js",
+    "static/media/accident-icon.svg": "/kyusitrip-frontend/static/media/accident-icon.4c9c84e364b16a05cc23129ca7ac6360.svg",
+    "static/media/traffic-jam-icon.svg": "/kyusitrip-frontend/static/media/traffic-jam-icon.e02dfb6df98056552e3bdd205a6562b6.svg",
+    "static/media/flood-icon.svg": "/kyusitrip-frontend/static/media/flood-icon.4aed1757381686461ff66c260a7ce47e.svg",
+    "static/media/road-repair-icon.svg": "/kyusitrip-frontend/static/media/road-repair-icon.4114e7215d0c78634e8a634afd0daa6b.svg",
+    "static/media/person-icon.png": "/kyusitrip-frontend/static/media/person-icon.5fecf9c7d8b9c639b552.png",
+    "static/media/closure-icon.svg": "/kyusitrip-frontend/static/media/closure-icon.b51d1b813097c23eb0dfb56c035bc93a.svg",
+    "static/media/route-modal-map-icon.png": "/kyusitrip-frontend/static/media/route-modal-map-icon.205be59931b2848b521f.png",
+    "static/media/hindrance-icon.svg": "/kyusitrip-frontend/static/media/hindrance-icon.12da1de61b99b0740102ee3ab364a79c.svg",
+    "static/media/route-icon.svg": "/kyusitrip-frontend/static/media/route-icon.c0308cb06479e9d5fc9cd6dc4a23ae8c.svg",
+    "static/media/placeholder.png": "/kyusitrip-frontend/static/media/placeholder.cda535e2fe1464feb905.png",
+    "static/media/notif.png": "/kyusitrip-frontend/static/media/notif.c27da6f9d4507be3999b.png",
+    "static/media/success.png": "/kyusitrip-frontend/static/media/success.3146d23309d5c2a7f7ec.png",
+    "static/media/map-origin.png": "/kyusitrip-frontend/static/media/map-origin.df130498e4193fd8c52b.png",
+    "static/media/map-destination.png": "/kyusitrip-frontend/static/media/map-destination.bdd982cece3abe51fa9e.png",
+    "static/media/map-warning.svg": "/kyusitrip-frontend/static/media/map-warning.927904aebf6f3b2ade9604c87e91764b.svg",
+    "static/media/map-bus.png": "/kyusitrip-frontend/static/media/map-bus.6efff164122da3d9931b.png",
+    "static/media/map-rail.png": "/kyusitrip-frontend/static/media/map-rail.8e0581177ea0640d7fae.png",
+    "static/media/report-icon.svg": "/kyusitrip-frontend/static/media/report-icon.4847d6d32f214af52e806e58ffa65a09.svg",
+    "static/media/menu-icon.svg": "/kyusitrip-frontend/static/media/menu-icon.be262ea785e072680a44f8318b103d64.svg",
+    "static/media/modal-logo.svg": "/kyusitrip-frontend/static/media/modal-logo.1fcc63f9241870f29861610db90d463c.svg",
+    "static/media/LOGO2.svg": "/kyusitrip-frontend/static/media/LOGO2.8c423755cc57b9a8b718a8050b046af4.svg",
+    "index.html": "/kyusitrip-frontend/index.html",
+    "main.f4625d26.css.map": "/kyusitrip-frontend/static/css/main.f4625d26.css.map",
+    "main.2db464bc.js.map": "/kyusitrip-frontend/static/js/main.2db464bc.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f4625d26.css",
+    "static/js/main.2db464bc.js"
+  ]
+}
