@@ -1,0 +1,18 @@
+/* Google Maps Modification */
+
+/* .gm-fullscreen-control {
+    display:none;
+}
+   
+.gm-svpc {
+    display:none;
+} */
+
+.gmnoprint {
+    display: none;
+}
+
+.combobox-input {
+    width: 100%;
+    padding: 0.5rem;
+}
