@@ -30,6 +30,7 @@
     "react-geocode": "^1.0.0-alpha.1",
     "react-router-dom": "^6.16.0",
     "react-select": "^5.7.7",
+    "react-simple-keyboard": "^3.7.121",
     "redux": "^5.0.1",
     "styled-components": "^6.1.8",
     "validator": "^13.11.0",

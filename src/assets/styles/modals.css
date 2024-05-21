@@ -799,3 +799,30 @@ input {
 .menu-modal-logout:hover {
   background-color: #ffd23f;
 }
+
+.virtual-keyboard {
+  position: fixed;
+  bottom: 25px;
+  left: 60%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 100%; /* Increase the width */
+  max-width: 850px; /* Set a maximum width */
+  height: auto; /* Allow the height to adjust based on content */
+  font-size: 1rem; /* Increase the font size for larger keys */
+  background-color: #880015; /* Background color of the keyboard */
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.virtual-keyboard .hg-button {
+  height: 60px; /* Adjust the height of each key */
+  line-height: 60px; /* Center text vertically */
+  font-size: 1.2em; /* Increase the font size of each key */
+  margin: 0 5px; /* Add some margin between keys */
+  color: #880015;
+  background-color: #880015;
+}
+
+.virtual-keyboard .hg-button:active {
+  background-color: #45a049; /* Darker green when the key is pressed */
+}

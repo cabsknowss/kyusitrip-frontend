@@ -10,11 +10,10 @@ import * as Icons from "@fortawesome/free-solid-svg-icons"
 import "../../assets/styles/modals.css"
 import "../../assets/styles/routelist.css"
 import RouteList from '../../components/planner/RouteList.js'
-
-
+import Keyboard from "react-simple-keyboard"
+import 'react-simple-keyboard/build/css/index.css';
 
 const RouteModal = (props) => {
-
   const {
     onItinerarySelect,
     selectPlannerCenter,
@@ -30,7 +29,6 @@ const RouteModal = (props) => {
     isPinDestination
   } = props
 
-
   const [loading, setLoading] = useState(false)
   const [origin, setOrigin] = useState(null)
   const [destination, setDestination] = useState(null)
@@ -38,73 +36,72 @@ const RouteModal = (props) => {
   const [error, setError] = useState("")
   const originInputRef = useRef(null)
   const destinationInputRef = useRef(null)
-
   const [originCoordinates, setOriginCoordinates] = useState({})
   const [destinationCoordinates, setDestinationCoordinates] = useState({})
-  // let timeoutId = null
+  const [showOriginKeyboard, setShowOriginKeyboard] = useState(false)
+  const [showDestinationKeyboard, setShowDestinationKeyboard] = useState(false)
 
+
+
+  /* RESET EVERYTHING WHEN RESET BUTTON IS CLICKED */
   const handleReset = () => {
     setRoutes(null)
     onItinerarySelect(null)
     originInputRef.current.value = null
     destinationInputRef.current.value = null
     selectDestinationMarker(null)
-    // clearTimer()
   }
 
-  // const clearTimer = () => {
-  //   if (timeoutId) {
-  //     clearTimeout(timeoutId)
-  //     timeoutId = null
-  //   }
-  // }
 
-  // useEffect(() => {
-  //   return () => clearTimer(); // Cleanup function to stop timer on unmount
-  // }, []);
 
+  /* SET ORIGIN AND DESTINATION FROM PINNED LOCATION */
   useEffect(() => {
     if (originPinData) {
       console.log(originPinData)
       originInputRef.current.value = originPinData.address.results[0].formatted_address
       setOriginCoordinates({lat: originPinData.lat, lng: originPinData.lng})
     }
-
   }, [originPinData])
-
   useEffect(() => {
     if (destinationPinData) {
       console.log(destinationPinData)
       destinationInputRef.current.value = destinationPinData.address.results[0].formatted_address
       setDestinationCoordinates({lat: destinationPinData.lat, lng: destinationPinData.lng})
     }
-
   }, [destinationPinData])
+  
 
 
+  /* MAKE IT POSSIBLE FOR USER TO PIN ON THE MAP */
   const handlePinOrigin = () => {
     setError('')
     onPinOrigin(true)
+    setShowOriginKeyboard(false)
+    setShowDestinationKeyboard(false)
   }
-
   const handlePinDestination = () => {
     setError('')
     onPinDestination(true)
+    setShowOriginKeyboard(false)
+    setShowDestinationKeyboard(false)
   }
 
 
+
+  /* FIND ROUTES FUNCTION */
   const getRoutes = () => {
     setLoading(true)
     setRoutes(null)
     onItinerarySelect(null)
+    setShowOriginKeyboard(false)
+    setShowDestinationKeyboard(false)
 
     if (originInputRef.current.value === '' || destinationInputRef.current.value === '') {
       setRoutes(null)
       setError("Wrong input")
       return;
     }
-
-
+    
     const data = {
       origin: {
         lat: originCoordinates.lat,
@@ -115,12 +112,10 @@ const RouteModal = (props) => {
         lng: destinationCoordinates.lng
       }
     };
-    console.log(data)
 
     routeService
       .create(data)
       .then((response) => {
-        console.log(response.data.otpResponse.plan)
         setLoading(false)
         setRoutes(response.data.otpResponse.plan)
         setError("")
@@ -130,8 +125,6 @@ const RouteModal = (props) => {
           lng: response.data.otpResponse.plan.itineraries[0].legs[0].from.lon
         })
         selectOriginMarker(null)
-        // clearTimer()
-        // timeoutId = setTimeout(handleReset, 300000)
       })
       .catch((error) => {
         console.log(error);
@@ -147,39 +140,47 @@ const RouteModal = (props) => {
   };
 
 
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_API_KEY,
-    libraries: config.libraries,
-  });
+
+  /* VIRTUAL KEYBOARD FUNCTIONS */
+  const keyboard = useRef();
+  const [layout, setLayout] = useState("default");
+
+  const onChangeOrigin = input => {
+    if (showOriginKeyboard) originInputRef.current.value = input
+  };
+  const onKeyPressOrigin = button => {
+    console.log(button)
+    if (showOriginKeyboard) {originInputRef.current.focus()}
+  };
+  const onChangeDestination = input => {
+    if (showDestinationKeyboard) destinationInputRef.current.value = input
+  };
+  const onKeyPressDestination = button => {
+    console.log(button)
+    if (showDestinationKeyboard) {destinationInputRef.current.focus()}
+  };
 
 
-  if (!isLoaded) {
-    return <div>Loading...</div>
-  }
 
-
+  /* RUN THE FUNCTION WHEN SUGGESTED LOCATION IS CLICKED FROM AUTOCOMPLETE */
   const onPlaceOriginChanged = (origin) => {
     if (origin !== null) {
       const places = {
         lat: origin.getPlace().geometry.location.lat(),
         lng: origin.getPlace().geometry.location.lng()
       };
-      console.log(places);
       selectOriginMarker(places)
       selectPlannerCenter({lat: places.lat, lng: places.lng})
       setOriginCoordinates({lat: places.lat, lng: places.lng})
     }
     setError("");
   };
-
-
   const onPlaceDestinationChanged = (destination) => {
     if (destination !== null) {
       const places = {
         lat: destination.getPlace().geometry.location.lat(),
         lng: destination.getPlace().geometry.location.lng()
       };
-      console.log(places);
       selectDestinationMarker(places)
       selectPlannerCenter({lat: places.lat, lng: places.lng})
       setDestinationCoordinates({lat: places.lat, lng: places.lng})
@@ -188,6 +189,13 @@ const RouteModal = (props) => {
   };
 
 
+
+  /* USED FOR GOOGLE MAPS API */
+  const { isLoaded } = useLoadScript({
+    googleMapsApiKey: process.env.REACT_APP_API_KEY,
+    libraries: config.libraries,
+  });
+
   const options = {
     componentRestrictions: { 
       country: "ph" ,
@@ -195,6 +203,9 @@ const RouteModal = (props) => {
     fields: ["geometry"],
   };
 
+  if (!isLoaded) {
+    return <div>Loading...</div>
+  }
 
   return (
     <>
@@ -224,11 +235,46 @@ const RouteModal = (props) => {
                   type="text"
                   placeholder="Origin"
                   className="route-modal-combo-box"
-                  onClick={() => onPinOrigin(false)}
-                  onFocus={() => originInputRef.current.select()}
+                  onClick={() => {
+                    onPinOrigin(false)
+                    originInputRef.current.select()
+                  }}
+                  onFocus={() => {
+                    setShowOriginKeyboard(true)
+                    setShowDestinationKeyboard(false)
+                  }}
                   ref={originInputRef}
                 />
               </Autocomplete>
+
+              {showOriginKeyboard &&
+                <div className="virtual-keyboard">
+                  <Keyboard 
+                    keyboardRef={r => (keyboard.current = r)}
+                    layoutName={layout}
+                    layout={{
+                      default: [
+                        "1 2 3 4 5 6 7 8 9 0 {bksp}",
+                        "Q W E R T Y U I O P",
+                        "A S D F G H J K L",
+                        "Z X C V B N M",
+                        "{space}"
+                      ]
+                    }}
+                    display={{
+                      '{bksp}': 'Backspace',
+                      '{space}': 'SPACE',
+                      '{shift}': 'shift',
+                    }}
+                    onChange={onChangeOrigin}
+                    onKeyPress={onKeyPressOrigin}
+                    useMouseEvents={true}
+                    maxLength={15}
+                    disableButtonHold={true}
+                  />
+                </div>
+              }
+              
 
               <Autocomplete
                 onPlaceChanged={() => onPlaceDestinationChanged(destination)}
@@ -240,12 +286,49 @@ const RouteModal = (props) => {
                   type="text"
                   placeholder="Destination"
                   className="route-modal-combo-box"
-                  onClick={() => onPinDestination(false)}
-                  onFocus={() => destinationInputRef.current.select()}
+                  onClick={() => {
+                    onPinDestination(false)
+                    destinationInputRef.current.select()
+                  }}
+                  onFocus={() => {
+                    setShowOriginKeyboard(false)
+                    setShowDestinationKeyboard(true)
+                  }}
                   ref={destinationInputRef}
                 />
               </Autocomplete>
+
+              {showDestinationKeyboard &&
+                <div className="virtual-keyboard">
+                  <Keyboard 
+                    keyboardRef={r => (keyboard.current = r)}
+                    layoutName={layout}
+                    layout={{
+                      default: [
+                        "1 2 3 4 5 6 7 8 9 0 {bksp}",
+                        "Q W E R T Y U I O P",
+                        "A S D F G H J K L",
+                        "Z X C V B N M",
+                        "{space}"
+                      ]
+                    }}
+                    display={{
+                      '{bksp}': 'Backspace',
+                      '{space}': 'SPACE',
+                      '{shift}': 'shift',
+                    }}
+                    onChange={onChangeDestination}
+                    onKeyPress={onKeyPressDestination}
+                    useMouseEvents={true}
+                    maxLength={15}
+                    disableButtonHold={true}
+                  />
+                </div>
+              }
             </div>
+
+
+            
 
             <div className="route-modal-pin-location">
               <button 
