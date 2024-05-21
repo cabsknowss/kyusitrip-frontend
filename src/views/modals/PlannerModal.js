@@ -146,18 +146,27 @@ const RouteModal = (props) => {
   const [layout, setLayout] = useState("default");
 
   const onChangeOrigin = input => {
-    if (showOriginKeyboard) originInputRef.current.value = input
+    originInputRef.current.value = input;
+    setTimeout(() => {
+      const event = new Event('input', { bubbles: true });
+      originInputRef.current.dispatchEvent(event);
+    }, 0);
   };
   const onKeyPressOrigin = button => {
-    console.log(button)
-    if (showOriginKeyboard) {originInputRef.current.focus()}
+    console.log(button);
+    if (showOriginKeyboard) { originInputRef.current.focus(); }
   };
+
   const onChangeDestination = input => {
-    if (showDestinationKeyboard) destinationInputRef.current.value = input
+    destinationInputRef.current.value = input;
+    setTimeout(() => {
+      const event = new Event('input', { bubbles: true });
+      destinationInputRef.current.dispatchEvent(event);
+    }, 0);
   };
   const onKeyPressDestination = button => {
-    console.log(button)
-    if (showDestinationKeyboard) {destinationInputRef.current.focus()}
+    console.log(button);
+    if (showDestinationKeyboard) { destinationInputRef.current.focus(); }
   };
 
 
