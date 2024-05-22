@@ -1,9 +1,9 @@
 import Route from './Route'
 
 
-
 const RouteList = (props) => {
 
+  // Props
   const {
     routes,
     onItinerarySelect,
@@ -14,13 +14,15 @@ const RouteList = (props) => {
   } = props
 
 
-  // ---------Duration Bar------------
+  // ------------------------------------------------------------ //
+  // Duration Bar
+  // ------------------------------------------------------------ //
   let routesDuration = []
 
   for (let i = 0; i < routes.itineraries.length; i++) {
     routesDuration.push(routes.itineraries[i].duration)
   }
-  // --------------END----------------
+ 
 
   return (
     <div style={{padding: 10}}>

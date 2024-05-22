@@ -1,8 +1,4 @@
 /*global google*/
-import { useState, useEffect } from 'react'
-import { GoogleMap, Marker, Polyline, InfoWindow, TrafficLayer } from "@react-google-maps/api"
-import decodePolyline from 'decode-google-map-polyline'
-import { geocode, RequestType } from 'react-geocode'
 import "../../assets/styles/googlemap.css"
 import reportService from '../../services/reportService'
 import busIcon from '../../assets/img/map-bus.png'
@@ -16,15 +12,24 @@ import accidentIcon from '../../assets/img/accident-icon.svg'
 import repairIcon from '../../assets/img/road-repair-icon.svg'
 import floodIcon from '../../assets/img/flood-icon.svg'
 import closureIcon from '../../assets/img/closure-icon.svg'
+
+import { useState, useEffect } from 'react'
+import { GoogleMap, Marker, Polyline, InfoWindow, TrafficLayer } from "@react-google-maps/api"
+import decodePolyline from 'decode-google-map-polyline'
+import { geocode, RequestType } from 'react-geocode'
 import io from "socket.io-client"
 const socket = io.connect("http://localhost:3001")
 
 
-
 const Map = (props) => {
 
+
+  // ------------------------------------------------------------ //
+  // Props
+  // ------------------------------------------------------------ //
   const {
     mapOptions,
+    showTrafficLayer,
 
     // ReportModal
     isMarkLocation,
@@ -41,25 +46,25 @@ const Map = (props) => {
     onOriginLocationSelect,
     onPinDestination,
     isPinDestination,
-    onDestinationLocationSelect,
-
-    // For Test
-    showTrafficLayer
+    onDestinationLocationSelect
   } = props
   
 
-
+  // ------------------------------------------------------------ //
+  // Icons in Map based on mode of transpo
+  // ------------------------------------------------------------ //
   const modeIcons = {
     "WALK": `${walkIcon}`,
     "BUS": `${busIcon}`,
     "RAIL": `${railIcon}`,
   };
+
+
+  // ------------------------------------------------------------ //
+  // Get all the reports from the database
+  // ------------------------------------------------------------ //
   const [reports, setReports] = useState(null)
-  // const [showTrafficLayer, setShowTrafficLayer] = useState(true)
 
-
-
-  // Get all the reports from database
   useEffect(() => {
     reportService
     .getAll()
@@ -89,12 +94,11 @@ const Map = (props) => {
   }, [socket])
 
 
-
-  // PlannerModal - Render markers itinerary's leg start
+  // ------------------------------------------------------------ //
+  // Planner Modal - Render the markers of the legs of the chosen itinerary
+  // ------------------------------------------------------------ //
   const renderLegStartMarkers = () => {
     if (selectedItinerary && selectedItinerary.legs) {
-      // selectOriginMarker(null)
-      // selectDestinationMarker(null)
       return selectedItinerary.legs.map((leg, index) => (
         <Marker
           key={index}
@@ -109,7 +113,10 @@ const Map = (props) => {
     return null;
   };
 
-  // PlannerModal - Render itinerary polylines
+
+  // ------------------------------------------------------------ //
+  // Planner Modal - Render the polylines of the chosen itinerary
+  // ------------------------------------------------------------ //
   const renderPolylines = () => {
     if (selectedItinerary && selectedItinerary.legs) {
       return selectedItinerary.legs.map((leg, index) => {
@@ -142,7 +149,9 @@ const Map = (props) => {
   };
 
 
-  // PlannerModal - Render itinerary destination marker
+  // ------------------------------------------------------------ //
+  // Planner Modal - Render the itinerary's destination marker
+  // ------------------------------------------------------------ //
   const renderDestinationMarker = () => {
     if (selectedItinerary && selectedItinerary.legs.length > 0) {
       const lastLeg = selectedItinerary.legs[selectedItinerary.legs.length - 1];
@@ -160,8 +169,9 @@ const Map = (props) => {
   };
 
 
-
-  // PlannerModal - Render origin marker
+  // ------------------------------------------------------------ //
+  // Planner Modal - Render the marker of origin
+  // ------------------------------------------------------------ //
   const renderStartMarker = () => {
     if (originMarker) {
       return (
@@ -177,7 +187,10 @@ const Map = (props) => {
     return null;
   };
 
-  // PlannerModal - Render destination marker
+
+  // ------------------------------------------------------------ //
+  // Planner Modal - Render the marker of destination
+  // ------------------------------------------------------------ //
   const renderEndMarker = () => {
     if (destinationMarker) {
       return (
@@ -194,8 +207,9 @@ const Map = (props) => {
   };
 
 
-
-  // ReportModal - Render marker for Mark Location 
+  // ------------------------------------------------------------ //
+  // Report Modal - Render the marker for mark location when reporting
+  // ------------------------------------------------------------ //
   const renderReportMarker = () => {
     if (reportMarker) {
       return (
@@ -212,10 +226,12 @@ const Map = (props) => {
   };
 
 
+  // ------------------------------------------------------------ //
+  // Report Modal - Render all the reports on the map
+  // ------------------------------------------------------------ //
   const [selectedReport, setSelectedReport] = useState(null);
-  // ReportModal - Render reports
-  const renderReports = () => {
 
+  const renderReports = () => {
     const handleMarkerClick = (report) => {
       setSelectedReport(report);
     };
@@ -254,8 +270,7 @@ const Map = (props) => {
                 position={report.latLng}
                 onCloseClick={handleInfoWindowClose}
               >
-                <div>
-                  {/* Content of the InfoWindow */}
+                <div> {/* -----------------------Content of the InfoWindow------------------------- */}
                   <h3>{report.title}</h3>
                   <p>{report.body}</p>
                   <button onClick={() => console.log("clicked")}>click</button>
@@ -270,8 +285,9 @@ const Map = (props) => {
   };
 
 
-
-  // ReportModal - Mark Location callback function
+  // ------------------------------------------------------------ //
+  // Report Modal - Callback function when marking a location on map
+  // ------------------------------------------------------------ //
   const mapClickHandler = async (event) => {
     if (isMarkLocation) {
       const lat = event.latLng.lat();
@@ -317,8 +333,6 @@ const Map = (props) => {
 
   };
 
-  
-
 
   return (
     <GoogleMap 
@@ -326,11 +340,7 @@ const Map = (props) => {
       mapContainerClassName="map-container"
       onClick={mapClickHandler}
     >
-      {showTrafficLayer && 
-        <TrafficLayer 
-          
-        />
-      }
+      {showTrafficLayer && <TrafficLayer />}
 
       {renderReportMarker()}
       {renderReports()}
@@ -341,12 +351,7 @@ const Map = (props) => {
       {renderDestinationMarker()}
       {renderLegStartMarkers()}
       {renderPolylines()}
-      
-      {/* {someCoords ? someCoords.map((coord, index) => (
-        <Marker key={index} position={{ lat: coord.lat, lng: coord.lng}}/>
-      )):<></>} */}
-      {/* {testPolylineHandler()}
-      {testMarkerHandler()} */}
+    
     </GoogleMap>
   )
 }

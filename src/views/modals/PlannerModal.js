@@ -1,19 +1,23 @@
 import { useState, useRef, useEffect } from "react"
 import { Autocomplete, useLoadScript } from "@react-google-maps/api"
+import Keyboard from "react-simple-keyboard"
+import 'react-simple-keyboard/build/css/index.css';
+import { library } from "@fortawesome/fontawesome-svg-core"
+import * as Icons from "@fortawesome/free-solid-svg-icons"
+
 import ModalHeader from "../../components/ModalHeader"
 import routeIcon from "../../assets/img/route-modal-map-icon.png"
 import routePlaceholder from "../../assets/img/placeholder.png"
 import routeService from "../../services/routeService"
+import RouteList from '../../components/planner/RouteList.js'
 import config from "../../utils/config"
-import { library } from "@fortawesome/fontawesome-svg-core"
-import * as Icons from "@fortawesome/free-solid-svg-icons"
 import "../../assets/styles/modals.css"
 import "../../assets/styles/routelist.css"
-import RouteList from '../../components/planner/RouteList.js'
-import Keyboard from "react-simple-keyboard"
-import 'react-simple-keyboard/build/css/index.css';
+
 
 const RouteModal = (props) => {
+  
+  // Props
   const {
     onItinerarySelect,
     selectPlannerCenter,
@@ -29,6 +33,10 @@ const RouteModal = (props) => {
     isPinDestination
   } = props
 
+
+  // ------------------------------------------------------------ //
+  // States
+  // ------------------------------------------------------------ //
   const [loading, setLoading] = useState(false)
   const [origin, setOrigin] = useState(null)
   const [destination, setDestination] = useState(null)
@@ -40,10 +48,11 @@ const RouteModal = (props) => {
   const [destinationCoordinates, setDestinationCoordinates] = useState({})
   const [showOriginKeyboard, setShowOriginKeyboard] = useState(false)
   const [showDestinationKeyboard, setShowDestinationKeyboard] = useState(false)
+  // ************************************************************ //
 
 
 
-  /* RESET EVERYTHING WHEN RESET BUTTON IS CLICKED */
+  // Reset button function
   const handleReset = () => {
     setRoutes(null)
     onItinerarySelect(null)
@@ -54,7 +63,9 @@ const RouteModal = (props) => {
 
 
 
-  /* SET ORIGIN AND DESTINATION FROM PINNED LOCATION */
+  // ------------------------------------------------------------ //
+  // Set Origin and Destination from pinned location
+  // ------------------------------------------------------------ //
   useEffect(() => {
     if (originPinData) {
       console.log(originPinData)
@@ -69,10 +80,13 @@ const RouteModal = (props) => {
       setDestinationCoordinates({lat: destinationPinData.lat, lng: destinationPinData.lng})
     }
   }, [destinationPinData])
-  
+  // ************************************************************ //
 
 
-  /* MAKE IT POSSIBLE FOR USER TO PIN ON THE MAP */
+
+  // ------------------------------------------------------------ //
+  // Make it possible for users to pin on map
+  // ------------------------------------------------------------ //
   const handlePinOrigin = () => {
     setError('')
     onPinOrigin(true)
@@ -85,10 +99,13 @@ const RouteModal = (props) => {
     setShowOriginKeyboard(false)
     setShowDestinationKeyboard(false)
   }
+  // ************************************************************ //
 
 
 
-  /* FIND ROUTES FUNCTION */
+  // ------------------------------------------------------------ //
+  // Find Routes button function
+  // ------------------------------------------------------------ //
   const getRoutes = () => {
     setLoading(true)
     setRoutes(null)
@@ -138,10 +155,13 @@ const RouteModal = (props) => {
         }
       });
   };
+  // ************************************************************ //
 
 
 
-  /* VIRTUAL KEYBOARD FUNCTIONS */
+  // ------------------------------------------------------------ //
+  // React-Simple-Keyboard library functions
+  // ------------------------------------------------------------ //
   const keyboard = useRef();
   const [layout, setLayout] = useState("default");
 
@@ -168,10 +188,13 @@ const RouteModal = (props) => {
     console.log(button);
     if (showDestinationKeyboard) { destinationInputRef.current.focus(); }
   };
+  // ************************************************************ //
 
 
 
-  /* RUN THE FUNCTION WHEN SUGGESTED LOCATION IS CLICKED FROM AUTOCOMPLETE */
+  // ------------------------------------------------------------ //
+  // Run this function when user selects location from autocomplete places API
+  // ------------------------------------------------------------ //
   const onPlaceOriginChanged = (origin) => {
     if (origin !== null) {
       const places = {
@@ -196,10 +219,13 @@ const RouteModal = (props) => {
     }
     setError("");
   };
+  // ************************************************************ //
 
 
 
-  /* USED FOR GOOGLE MAPS API */
+  // ------------------------------------------------------------ //
+  // Google Maps Places API functions and options
+  // ------------------------------------------------------------ //
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_API_KEY,
     libraries: config.libraries,
@@ -215,6 +241,9 @@ const RouteModal = (props) => {
   if (!isLoaded) {
     return <div>Loading...</div>
   }
+  // ************************************************************ //
+
+
 
   return (
     <>
@@ -337,8 +366,6 @@ const RouteModal = (props) => {
             </div>
 
 
-            
-
             <div className="route-modal-pin-location">
               <button 
                 className="route-modal-pin-location-buttons"
@@ -423,13 +450,3 @@ const iconList = Object.keys(Icons)
   .filter((key) => key !== "fas" && key !== "prefix")
   .map((icon) => Icons[icon]);
 library.add(...iconList);
-
-// const customStyles = {
-//   control: (provided) => ({
-//     ...provided,
-//     fontSize: '15px',
-//     border: '2px inset #EBE9ED',
-//     width: '290px',
-//     height: '100px',
-//   }),
-// };

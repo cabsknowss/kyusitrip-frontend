@@ -1,22 +1,28 @@
 import { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import axios from "axios"
+
 import "../assets/styles/passwordreset.css"
 import config from '../utils/config'
 
 
-
 const PasswordReset = () => {
 
+	// Dependencies
 	const param = useParams()
 	const navigate = useNavigate()
+
+	// Declarations
 	const url = `${config.URL_USED}/api/password-reset/${param.id}/${param.token}`
 	
-
+  // ------------------------------------------------------------ //
+  // States
+  // ------------------------------------------------------------ //
 	const [validUrl, setValidUrl] = useState(false)
 	const [password, setPassword] = useState("")
 	const [msg, setMsg] = useState("")
 	const [error, setError] = useState("")
+	// ************************************************************ //
 
 
 	useEffect(() => {

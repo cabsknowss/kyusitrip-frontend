@@ -1,21 +1,25 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axios from "axios"
+
 import config from '../utils/config.js'
 import "../assets/styles/forgetpassword.css"
 
 
-
 const ForgotPassword = () => {
 
+	// Dependencies
 	const navigate = useNavigate()
 	
-
+	// ------------------------------------------------------------ //
+  // States
+  // ------------------------------------------------------------ //
 	const [email, setEmail] = useState("")
 	const [msg, setMsg] = useState("")
 	const [error, setError] = useState("")
+	// ************************************************************ //
 
-
+	// Submit button function
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		try {

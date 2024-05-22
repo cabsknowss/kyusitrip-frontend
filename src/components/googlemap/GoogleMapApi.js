@@ -1,18 +1,21 @@
-// import { useState } from 'react'
-import { useLoadScript } from "@react-google-maps/api";
 import GoogleMap from "./GoogleMap";
 import config from "../../utils/config";
 import mapStyle from "./mapStyle.json"
 import "../../assets/styles/googlemap.css";
 
+import { useLoadScript } from "@react-google-maps/api";
 
 
 const GoogleMapApi = (props) => {
 
+  // ------------------------------------------------------------ //
+  // Props
+  // ------------------------------------------------------------ //
   const {
     centerLat,
     centerLng,
     mapZoom,
+    showTrafficLayer,
 
     // ReportModal
     isMarkLocation,
@@ -29,13 +32,13 @@ const GoogleMapApi = (props) => {
     onOriginLocationSelect,
     onPinDestination,
     isPinDestination,
-    onDestinationLocationSelect,
-
-    // For Test
-    showTrafficLayer
+    onDestinationLocationSelect
   } = props
 
 
+  // ------------------------------------------------------------ //
+  // useLoadScript for map loading
+  // ------------------------------------------------------------ //
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_API_KEY,
     libraries: config.libraries,
@@ -43,6 +46,9 @@ const GoogleMapApi = (props) => {
   if (!isLoaded) return <div>Loading...</div>;
 
 
+  // ------------------------------------------------------------ //
+  // Map Options
+  // ------------------------------------------------------------ //
   const mapOptions = {
     zoom: mapZoom, 
     minZoom: 14,

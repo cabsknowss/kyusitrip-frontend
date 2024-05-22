@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
 import { login } from '../services/loginService'
 import reportService from '../services/reportService'
 import CmnPopupModal from '../components/CmnPopupModal'
@@ -7,31 +8,32 @@ import '../assets/styles/login.css'
 import logo2 from '../assets/img/LOGO2.svg'
 
 
-
 const LoginPage = () => {
 
+  // Dependencies
   const navigate = useNavigate()
 
-
+  // ------------------------------------------------------------ //
+  // States
+  // ------------------------------------------------------------ //
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [modalMessage, setModalMessage] = useState('')
   const [error, setError] = useState('')
+  // ************************************************************ //
 
-
-  const handleLoginClick = async (event) => {
+  // Login button click
+  const handleLoginClick = async () => {
     try {
       const user = await login({
         email, password
       })
-
       setModalMessage("Log in Succesful")
       setShowModal(true)
-      setUser(user) // End
+      setUser(user) 
       reportService.setToken(user.token)
-
     } catch (error) {
       if (
         error.response &&

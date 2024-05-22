@@ -1,9 +1,11 @@
 import '../../assets/styles/routelist.css'
 
 
-
 const RouteDetail = ({ leg, selectRouteDetailCenter }) => {
 
+  // ------------------------------------------------------------ //
+  // Color coding of the mode of transportation
+  // ------------------------------------------------------------ //
   const modeContainer = () => {
     let color = 'black'
     if(leg.mode === 'WALK') {
@@ -21,7 +23,9 @@ const RouteDetail = ({ leg, selectRouteDetailCenter }) => {
   }
 
 
-  // -------Duration Formatter---------
+  // ------------------------------------------------------------ //
+  // Duration Formatter
+  // ------------------------------------------------------------ //
   const formatDuration = (seconds) => {
     const hours = Math.floor(seconds / 3600)
     seconds %= 3600
@@ -43,7 +47,9 @@ const RouteDetail = ({ leg, selectRouteDetailCenter }) => {
   }
 
 
-  // -------Time Formatter---------
+  // ------------------------------------------------------------ //
+  // Time Formatter
+  // ------------------------------------------------------------ //
   const formatTime = (date) => {
     const hours = new Date(date).getHours();
     const minutes = new Date(date).getMinutes();
@@ -59,7 +65,9 @@ const RouteDetail = ({ leg, selectRouteDetailCenter }) => {
   }
 
 
-  // -------Distance Formatter---------
+  // ------------------------------------------------------------ //
+  // Distance Formatter
+  // ------------------------------------------------------------ //
   const formatDistance = (distance) => {
     if (distance < 1000) {
       return `${Math.round(distance)} m`
@@ -68,14 +76,9 @@ const RouteDetail = ({ leg, selectRouteDetailCenter }) => {
     }
   }
 
-
-  const handleDetailClick = () => {
-    selectRouteDetailCenter({lat: leg.from.lat, lng: leg.from.lon, zoom: 18})
-  }
-
   
   return (
-    <div onClick={handleDetailClick}>
+    <div onClick={() => selectRouteDetailCenter({lat: leg.from.lat, lng: leg.from.lon, zoom: 18})}>
       <div className="route-detail-leg">
         <div className='route-detail-top'>
           <div>

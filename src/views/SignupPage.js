@@ -1,38 +1,37 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import userService from '../services/userService'
-import logo2 from '../assets/img/LOGO2.svg'
-import '../assets/styles/signup.css'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import userService from '../services/userService';
+import logo2 from '../assets/img/LOGO2.svg';
+import '../assets/styles/signup.css';
 
 
 const SignupPage = () => {
 
-  const navigate = useNavigate()
+  // Dependencies
+  const navigate = useNavigate();
 
-
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  // ------------------------------------------------------------ //
+  // States
+  // ------------------------------------------------------------ //
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [msg, setMsg] = useState("");
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
+  // ************************************************************ //
 
-
-  const clearInputFields = () => {
-    setName('')
-    setEmail('')
-    setPassword('')
-  }
-
-
-  const handleSignupClick = (e) => {
-    const data = {name, password, email}
+  // Sign-up button function
+  const handleSignupClick = () => {
+    const data = {name, password, email};
     userService
       .create(data)
       .then((response) => {
-        setMsg(response.message)
-        setError("")
-        clearInputFields()
+        setMsg(response.message);
+        setError("");
+        setName('');
+        setEmail('');
+        setPassword('');
       })
       .catch((error) => {
         if (
@@ -40,12 +39,11 @@ const SignupPage = () => {
           error.response.status >= 400 &&
           error.response.status <= 500
         ) {
-          setError(error.response.data.message)
-          setMsg("")
+          setError(error.response.data.message);
+          setMsg("");
         }
       })
   } 
-
 
   return (
     <div className="signup-page">

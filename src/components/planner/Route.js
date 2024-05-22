@@ -5,6 +5,9 @@ import SendEmailModal from './SendEmailModal'
 
 const Route = (props) => {
 
+  // ------------------------------------------------------------ //
+  // Props
+  // ------------------------------------------------------------ //
   const {
     itinerary,
     routesDuration,
@@ -15,20 +18,17 @@ const Route = (props) => {
     destination
   } = props
 
+  // ------------------------------------------------------------ //
+  // States
+  // ------------------------------------------------------------ //
   const [showDetails, setShowDetails] = useState(null)
   const [sendEmailPopup, setSendEmailPopup] = useState(null)
   const longestDuration = Math.max(...routesDuration)
+  const adjustedWidth = (itinerary.duration/longestDuration * 100) + '%'
 
-  const handleItineraryClick = () => {
-    console.log(itinerary)
-    onItinerarySelect(itinerary)
-    setShowDetails(!showDetails)
-    selectPlannerCenter({lat: itinerary.legs[0].from.lat, lng: itinerary.legs[0].from.lon, zoom: 15})
-  }
-
-
-  
-  // -------Duration Formatter---------
+  // ------------------------------------------------------------ //
+  // Duration Formatter
+  // ------------------------------------------------------------ //
   const formatDuration = (seconds) => {
     const hours = Math.floor(seconds / 3600)
     seconds %= 3600
@@ -49,7 +49,9 @@ const Route = (props) => {
     return formattedDuration;
   }
 
-  // -------Time Formatter---------
+  // ------------------------------------------------------------ //
+  // Time Formatter
+  // ------------------------------------------------------------ //
   const formatTime = (date) => {
     const hours = new Date(date).getHours();
     const minutes = new Date(date).getMinutes();
@@ -61,12 +63,21 @@ const Route = (props) => {
     return `${formattedHours}:${formattedMinutes} ${amPM}`;
   }
 
-  const adjustedWidth = (itinerary.duration/longestDuration * 100) + '%'
+  // ------------------------------------------------------------ //
+  // One of the Itinerary Click function
+  // ------------------------------------------------------------ //
+  const handleItineraryClick = () => {
+    console.log(itinerary)
+    onItinerarySelect(itinerary)
+    setShowDetails(!showDetails)
+    selectPlannerCenter({lat: itinerary.legs[0].from.lat, lng: itinerary.legs[0].from.lon, zoom: 15})
+  }
 
 
+  // ------------------------------------------------------------ //
+  // For Duration Bar
+  // ------------------------------------------------------------ //
   const markerPosition = (distance) => {
-    // const position = (duration/(itinerary.endTime) * 100) + '%'
-    // return position;
     let totalDistance = 0;
     for(let i = 0; i < itinerary.legs.length; i++) {
       totalDistance += itinerary.legs[i].distance
@@ -76,6 +87,9 @@ const Route = (props) => {
   }
 
 
+  // ------------------------------------------------------------ //
+  // Color coding of the mode of transportation
+  // ------------------------------------------------------------ //
   const legColors = (leg) => {
     let legColor = "black"
     if(leg.mode === "WALK"){

@@ -9,14 +9,15 @@ import "../assets/styles/emailverify.css"
 
 const EmailVerify = () => {
 
+	// Declarations
 	const navigate = useNavigate()
 	const param = useParams()
 
-
+	// States
 	const [validUrl, setValidUrl] = useState(true)
 
 
-	useEffect(() => {
+	useEffect(() => { // Once the screen loads, it will verify the account through axios.get(url)
 		const verifyEmailUrl = async () => {
 			try {
 				const url = `${config.URL_USED}/api/users/${param.id}/verify/${param.token}`

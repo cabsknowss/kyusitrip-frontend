@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import Select from "react-select"
+import io from "socket.io-client"
+
 import ModalHeader from "../../components/ModalHeader"
 import reportService from '../../services/reportService'
 import "../../assets/styles/modals.css"
-import io from "socket.io-client"
+
 const socket = io.connect("http://localhost:3001")
-
-
 
 const ReportModal = (props) => {
 
+  // Props
   const {
     onMarkLocation,
     onLocationSelect,
@@ -18,6 +19,7 @@ const ReportModal = (props) => {
     selectMapZoom,
   } = props
 
+  // Data of report categories
   const reportCategory = [
     { value: 1, label: "Traffic" },
     { value: 2, label: "Hazard" },
@@ -26,30 +28,23 @@ const ReportModal = (props) => {
     { value: 5, label: "Closure" }
   ]
 
-
+  // ------------------------------------------------------------ //
+  // States
+  // ------------------------------------------------------------ //
   const [location, setLocation] = useState('')
   const [category, setCategory] = useState(null)
   const [description, setDescription] = useState('')
   const [msg, setMsg] = useState("");
   const [error, setError] = useState('')
 
-
-  const clearInputFields = () => {
-    setLocation('')
-    setCategory(null)
-    setDescription('')
-    onLocationSelect(null)
-    selectReportMarker(null)
-    selectMapZoom(14)
-  }
-
-
+  // Sets reportData to location so that users can see the name of the location
   useEffect(() => {
     if (reportData) {
       setLocation(reportData.address.results[0].formatted_address)
     }
   }, [reportData])
 
+  // Sets onMarkLocation from HomePage: true so that pinning location will be enabled
   const handleMarkLocation = () => {
     setError('')
     setMsg('')
@@ -57,7 +52,7 @@ const ReportModal = (props) => {
     setLocation("Mark a Road Incident on the map")
   }
 
-
+  // Submit button function
   const handleSubmit = (e) => {
     e.preventDefault();
     if (reportData) {
@@ -75,7 +70,12 @@ const ReportModal = (props) => {
         .then((response) => {
           setMsg(response.message)
           setError('')
-          clearInputFields()
+          setLocation('')
+          setCategory(null)
+          setDescription('')
+          onLocationSelect(null)
+          selectReportMarker(null)
+          selectMapZoom(14)
           socket.emit("send_report", {message: "A user reported an incident"})
         })
         .catch((error) => {

@@ -1,16 +1,13 @@
-import { useNavigate } from 'react-router-dom'
-import '../assets/styles/landing.css'
-import logo2 from '../assets/img/LOGO2.svg'
+import { useNavigate } from 'react-router-dom';
 
+import '../assets/styles/landing.css';
+import logo2 from '../assets/img/LOGO2.svg';
 
 
 const LandingPage = () => {
   
-  const navigate = useNavigate()
-
-
-  const navigateToGuestPage = () => navigate('/HomePage')
-  
+  // Dependencies
+  const navigate = useNavigate();
 
   return (
     <div className='landing-page'>
@@ -26,7 +23,7 @@ const LandingPage = () => {
 
         <div className='landing-btn'>
           <button onClick={() => navigate('/LoginPage')}>Log in</button>
-          <button onClick={navigateToGuestPage}>Continue as Guest</button>
+          <button onClick={() => navigate('/HomePage')}>Continue as Guest</button>
         </div>
 
         <div className='landing-txt'>

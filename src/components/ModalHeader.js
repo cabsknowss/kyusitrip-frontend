@@ -2,7 +2,6 @@ import '../assets/styles/modals.css'
 import modalLogo from '../assets/img/modal-logo.svg'
 
 
-
 const ModalHeader = ({ title, isRoute = true }) => {
   return (
     <>
