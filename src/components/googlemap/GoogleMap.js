@@ -16,6 +16,8 @@ import accidentIcon from '../../assets/img/accident-icon.svg'
 import repairIcon from '../../assets/img/road-repair-icon.svg'
 import floodIcon from '../../assets/img/flood-icon.svg'
 import closureIcon from '../../assets/img/closure-icon.svg'
+import io from "socket.io-client"
+const socket = io.connect("http://localhost:3001")
 
 
 
@@ -70,6 +72,21 @@ const Map = (props) => {
       console.log(error)
     })
   }, [reportMarker]);
+
+  useEffect(() => {
+    socket.on("receive_message", () => {
+      reportService
+      .getAll()
+      .then((response) => {
+        console.log(response.data)
+        // const reportCoordinates = response.data.map((report) => report.latLng);
+        setReports(response.data)
+      })
+      .catch ((error) => {
+        console.log(error)
+      })
+    })
+  }, [socket])
 
 
 

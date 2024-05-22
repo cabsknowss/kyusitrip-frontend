@@ -3,6 +3,8 @@ import Select from "react-select"
 import ModalHeader from "../../components/ModalHeader"
 import reportService from '../../services/reportService'
 import "../../assets/styles/modals.css"
+import io from "socket.io-client"
+const socket = io.connect("http://localhost:3001")
 
 
 
@@ -74,6 +76,7 @@ const ReportModal = (props) => {
           setMsg(response.message)
           setError('')
           clearInputFields()
+          socket.emit("send_report", {message: "A user reported an incident"})
         })
         .catch((error) => {
           if (
