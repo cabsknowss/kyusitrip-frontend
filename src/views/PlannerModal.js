@@ -5,14 +5,14 @@ import 'react-simple-keyboard/build/css/index.css';
 import { library } from "@fortawesome/fontawesome-svg-core"
 import * as Icons from "@fortawesome/free-solid-svg-icons"
 
-import ModalHeader from "../../components/ModalHeader"
-import routeIcon from "../../assets/img/route-modal-map-icon.png"
-import routePlaceholder from "../../assets/img/placeholder.png"
-import routeService from "../../services/routeService"
-import RouteList from '../../components/planner/RouteList.js'
-import config from "../../utils/config"
-import "../../assets/styles/modals.css"
-import "../../assets/styles/routelist.css"
+import ModalHeader from "../components/ModalHeader.js"
+import routeIcon from "../assets/img/route-modal-map-icon.png"
+import routePlaceholder from "../assets/img/placeholder.png"
+import routeService from "../services/routeService.js"
+import RouteList from '../components/planner/RouteList.js'
+import config from "../utils/config.js"
+import "../assets/styles/modals.css"
+import "../assets/styles/routelist.css"
 
 
 const RouteModal = (props) => {
@@ -163,7 +163,6 @@ const RouteModal = (props) => {
   // React-Simple-Keyboard library functions
   // ------------------------------------------------------------ //
   const keyboard = useRef();
-  const [layout, setLayout] = useState("default");
 
   const onChangeOrigin = input => {
     originInputRef.current.value = input;
@@ -289,7 +288,7 @@ const RouteModal = (props) => {
                 <div className="virtual-keyboard">
                   <Keyboard 
                     keyboardRef={r => (keyboard.current = r)}
-                    layoutName={layout}
+                    layoutName={"default"}
                     layout={{
                       default: [
                         "1 2 3 4 5 6 7 8 9 0 {bksp}",
@@ -340,7 +339,7 @@ const RouteModal = (props) => {
                 <div className="virtual-keyboard">
                   <Keyboard 
                     keyboardRef={r => (keyboard.current = r)}
-                    layoutName={layout}
+                    layoutName={"default"}
                     layout={{
                       default: [
                         "1 2 3 4 5 6 7 8 9 0 {bksp}",

@@ -6,7 +6,6 @@ import originIcon from '../../assets/img/map-origin.png'
 import destinationIcon from '../../assets/img/map-destination.png'
 import walkIcon from '../../assets/img/map-walk.png'
 import railIcon from '../../assets/img/map-rail.png'
-import warningIcon from '../../assets/img/map-warning.svg'
 import trafficIcon from '../../assets/img/traffic-jam-icon.svg'
 import accidentIcon from '../../assets/img/accident-icon.svg'
 import repairIcon from '../../assets/img/road-repair-icon.svg'
@@ -18,11 +17,11 @@ import { GoogleMap, Marker, Polyline, InfoWindow, TrafficLayer } from "@react-go
 import decodePolyline from 'decode-google-map-polyline'
 import { geocode, RequestType } from 'react-geocode'
 import io from "socket.io-client"
-const socket = io.connect("http://localhost:3001")
-
 
 const Map = (props) => {
 
+  // Declarations
+  const socket = io.connect("http://localhost:3001")
 
   // ------------------------------------------------------------ //
   // Props
@@ -31,11 +30,9 @@ const Map = (props) => {
     mapOptions,
     showTrafficLayer,
 
-    // ReportModal
     isMarkLocation,
     onMarkLocation,
     onLocationSelect,
-    reportMarker,
 
     // PlannerModal
     selectedItinerary,
@@ -59,6 +56,21 @@ const Map = (props) => {
     "RAIL": `${railIcon}`,
   };
 
+  
+  // ------------------------------------------------------------ //
+  // Converts coordinates to address
+  // ------------------------------------------------------------ //
+  const geocodingApi = async (latlng) => {
+    const lat = latlng.lat;
+    const lng = latlng.lng;
+
+    const address = await geocode(
+      RequestType.LATLNG,
+      `${lat},${lng}`,
+      { language: "en", region: "es", key: process.env.REACT_APP_API_KEY }
+    )
+  }
+
 
   // ------------------------------------------------------------ //
   // Get all the reports from the database
@@ -76,7 +88,7 @@ const Map = (props) => {
     .catch ((error) => {
       console.log(error)
     })
-  }, [reportMarker]);
+  }, []);
 
   useEffect(() => {
     socket.on("receive_message", () => {
@@ -208,25 +220,6 @@ const Map = (props) => {
 
 
   // ------------------------------------------------------------ //
-  // Report Modal - Render the marker for mark location when reporting
-  // ------------------------------------------------------------ //
-  const renderReportMarker = () => {
-    if (reportMarker) {
-      return (
-        <Marker
-          position={{ lat: reportMarker.lat, lng: reportMarker.lng }}
-          icon={{
-            url: `${warningIcon}`,
-            scaledSize: new google.maps.Size(25, 25)
-          }}
-        />
-      );
-    }
-    return null;
-  };
-
-
-  // ------------------------------------------------------------ //
   // Report Modal - Render all the reports on the map
   // ------------------------------------------------------------ //
   const [selectedReport, setSelectedReport] = useState(null);
@@ -241,7 +234,7 @@ const Map = (props) => {
 
     if (reports) {
       return reports.map((report, index) => {
-        let marker = warningIcon
+        let marker = closureIcon
 
         if(report.category.label === 'Accident'){
           marker = accidentIcon
@@ -266,16 +259,22 @@ const Map = (props) => {
             onClick={() => handleMarkerClick(report)}
           >
             {selectedReport === report && (
-              <InfoWindow
-                position={report.latLng}
-                onCloseClick={handleInfoWindowClose}
-              >
-                <div> {/* -----------------------Content of the InfoWindow------------------------- */}
-                  <h3>{report.title}</h3>
-                  <p>{report.body}</p>
-                  <button onClick={() => console.log("clicked")}>click</button>
-                </div>
-              </InfoWindow>
+              <div>
+                <InfoWindow
+                  position={report.latLng}
+                  onCloseClick={handleInfoWindowClose}
+                >
+                  {/* -----------------------Content of the InfoWindow------------------------- */}
+                  <div style={{width: "150px", height: "200px"}}> 
+                    <p>{report.category.label}</p>
+                    <hr/>
+                    <p>Posted: {report.createdAt}</p>
+                    <p>Address: {report.address}</p>
+                    <p>By: {report.user.name}</p>
+                    <p>Description {report.description}</p>
+                  </div>
+                </InfoWindow>
+              </div>
             )}
           </Marker>
         )
@@ -341,8 +340,6 @@ const Map = (props) => {
       onClick={mapClickHandler}
     >
       {showTrafficLayer && <TrafficLayer />}
-
-      {renderReportMarker()}
       {renderReports()}
 
       {renderStartMarker()}

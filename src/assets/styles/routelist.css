@@ -102,36 +102,6 @@
   font-weight: bold;
 }
 
-.send-route-div {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.send-route-sms {
-  background-color: #f8c107;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  width: 140px;
-  height: 30px;
-  padding: auto;
-  transition: opacity 0.3s;
-  font-size: 12;
-}
-
-.send-route-email {
-  background-color: #f8c107;
-  color: black;
-  border: none;
-  border-radius: 5px;
-  width: 140px;
-  height: 30px;
-  padding: auto;
-  transition: opacity 0.3s;
-  font-size: 12;
-}
-
 .time-and-fare {
   display: flex;
   flex-direction: row;

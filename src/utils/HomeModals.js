@@ -1,8 +1,4 @@
-import ReportModal from '../views/modals/ReportModal'
-import HindranceModal from '../views/modals/HindranceModal'
-import PlannerModal from '../views/modals/PlannerModal'
-import MenuModal from '../views/modals/MenuModal'
-
+import PlannerModal from '../views/PlannerModal'
 
 
 const HomeModals = (props) => {
@@ -10,17 +6,6 @@ const HomeModals = (props) => {
 
   return (
     <>
-      {props.routeReportModal 
-        ? <ReportModal 
-          onMarkLocation={props.onMarkLocation}
-          onLocationSelect={props.onLocationSelect}
-          reportData={props.reportData}
-          selectReportMarker={props.selectReportMarker}
-          selectMapZoom={props.selectMapZoom}
-        /> 
-        : <></>
-      }
-
       {props.routePlannerModal 
         ? <PlannerModal 
           onItinerarySelect={props.onItinerarySelect}
@@ -35,18 +20,6 @@ const HomeModals = (props) => {
           destinationPinData={props.destinationPinData}
           isPinDestination={props.isPinDestination}
         /> 
-        : <></>
-      }
-
-      {props.routeUpdateModal 
-        ? <HindranceModal 
-          selectHindranceCenter={props.selectHindranceCenter}
-        /> 
-        : <></>
-      }
-
-      {props.routeMenuModal 
-        ? <MenuModal /> 
         : <></>
       }
     </>

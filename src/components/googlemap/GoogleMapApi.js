@@ -21,7 +21,6 @@ const GoogleMapApi = (props) => {
     isMarkLocation,
     onMarkLocation,
     onLocationSelect,
-    reportMarker,
 
     // PlannerModal
     selectedItinerary,
@@ -74,7 +73,6 @@ const GoogleMapApi = (props) => {
       isMarkLocation={isMarkLocation}
       onMarkLocation={onMarkLocation}
       onLocationSelect={onLocationSelect}
-      reportMarker={reportMarker}
 
       selectedItinerary={selectedItinerary}
       originMarker={originMarker}

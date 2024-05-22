@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import RouteDetail from './RouteDetail'
 import "../../assets/styles/routelist.css"
-import SendEmailModal from './SendEmailModal'
 
 const Route = (props) => {
 
@@ -14,15 +13,12 @@ const Route = (props) => {
     onItinerarySelect,
     selectPlannerCenter,
     selectRouteDetailCenter,
-    origin,
-    destination
   } = props
 
   // ------------------------------------------------------------ //
   // States
   // ------------------------------------------------------------ //
   const [showDetails, setShowDetails] = useState(null)
-  const [sendEmailPopup, setSendEmailPopup] = useState(null)
   const longestDuration = Math.max(...routesDuration)
   const adjustedWidth = (itinerary.duration/longestDuration * 100) + '%'
 
@@ -162,9 +158,6 @@ const Route = (props) => {
           </div>
           {showDetails ? (
             <div>
-              <div className='send-route-div'>
-                <button onClick={() => setSendEmailPopup(true)} className='send-route-email'>Send route via Email</button>
-              </div>
               <ul>
                 {itinerary.legs.map((leg, index) => (
                   <RouteDetail 
@@ -180,15 +173,6 @@ const Route = (props) => {
           )}
         </div>
       )}
-
-      {sendEmailPopup && 
-        <SendEmailModal 
-          onClose={() => setSendEmailPopup(false)}
-          itinerary={itinerary}
-          origin={origin}
-          destination={destination}
-        />
-      }
     </>
   )
 }
