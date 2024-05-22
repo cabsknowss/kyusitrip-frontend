@@ -11,6 +11,10 @@ import accidentIcon from '../../assets/img/accident-icon.svg'
 import repairIcon from '../../assets/img/road-repair-icon.svg'
 import floodIcon from '../../assets/img/flood-icon.svg'
 import closureIcon from '../../assets/img/closure-icon.svg'
+import addressInfo from '../../assets/img/info-address.png'
+import descriptionInfo from '../../assets/img/info-description.png'
+import timeInfo from '../../assets/img/info-time.png'
+import userInfo from '../../assets/img/info-user.png'
 
 import { useState, useEffect } from 'react'
 import { GoogleMap, Marker, Polyline, InfoWindow, TrafficLayer } from "@react-google-maps/api"
@@ -56,19 +60,26 @@ const Map = (props) => {
     "RAIL": `${railIcon}`,
   };
 
-  
-  // ------------------------------------------------------------ //
-  // Converts coordinates to address
-  // ------------------------------------------------------------ //
-  const geocodingApi = async (latlng) => {
-    const lat = latlng.lat;
-    const lng = latlng.lng;
 
-    const address = await geocode(
-      RequestType.LATLNG,
-      `${lat},${lng}`,
-      { language: "en", region: "es", key: process.env.REACT_APP_API_KEY }
-    )
+  // ------------------------------------------------------------ //
+  // ISO 8601 date string converter
+  // ------------------------------------------------------------ //
+  const isoDateConverter = (iso) => {
+    const now = new Date()
+    const createdAt = new Date(iso)
+    const diffInMilliseconds = now - createdAt
+    const diffInMinutes = Math.round(diffInMilliseconds / (60 * 1000))
+    if (diffInMinutes < 1) {
+      return 'Just now';
+    } else if (diffInMinutes === 1) {
+      return '1 minute ago';
+    } else if (diffInMinutes <= 60){
+      return `${diffInMinutes} minutes ago`;
+    } else if (diffInMinutes > 60 && diffInMinutes < 120) {
+      return '1 hour ago'
+    } else {
+      return `${Math.round(diffInMinutes/60)} hours ago`
+    }
   }
 
 
@@ -265,13 +276,25 @@ const Map = (props) => {
                   onCloseClick={handleInfoWindowClose}
                 >
                   {/* -----------------------Content of the InfoWindow------------------------- */}
-                  <div style={{width: "150px", height: "200px"}}> 
-                    <p>{report.category.label}</p>
+                  <div className="infowindow"> 
+                    <h2 style={{color: '#000'}}>{report.category.label}</h2>
                     <hr/>
-                    <p>Posted: {report.createdAt}</p>
-                    <p>Address: {report.address}</p>
-                    <p>By: {report.user.name}</p>
-                    <p>Description {report.description}</p>
+                    <div className="infowindow-div infowindow-div-align">
+                      <img className="infowindow-icon" src={timeInfo} alt="time"/>
+                      <p>{isoDateConverter(report.createdAt)}</p>
+                    </div>
+                    <div className="infowindow-div infowindow-div-align">
+                      <img className="infowindow-icon" src={descriptionInfo} alt="description"/>
+                      <p>{report.description}</p>
+                    </div>
+                    <div className="infowindow-div">
+                      <img className="infowindow-icon" src={addressInfo} alt="address"/>
+                      <p>{report.address}</p>
+                    </div>
+                    <div className="infowindow-div infowindow-div-align">
+                      <img className="infowindow-icon" src={userInfo} alt="user"/>
+                      <p>{report.user.name}</p>
+                    </div>
                   </div>
                 </InfoWindow>
               </div>
@@ -329,8 +352,8 @@ const Map = (props) => {
       onDestinationLocationSelect({ lat, lng, address });
       onPinDestination(false)
     }
-
   };
+  
 
 
   return (
