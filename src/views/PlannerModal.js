@@ -7,6 +7,7 @@ import * as Icons from "@fortawesome/free-solid-svg-icons"
 
 import ModalHeader from "../components/ModalHeader.js"
 import routeIcon from "../assets/img/route-modal-map-icon.png"
+import loadingPng from "../assets/img/loading.png"
 import routePlaceholder from "../assets/img/placeholder.png"
 import routeService from "../services/routeService.js"
 import RouteList from '../components/planner/RouteList.js'
@@ -59,6 +60,8 @@ const RouteModal = (props) => {
     originInputRef.current.value = null
     destinationInputRef.current.value = null
     selectDestinationMarker(null)
+    setShowOriginKeyboard(false)
+    setShowDestinationKeyboard(false)
   }
 
 
@@ -205,6 +208,10 @@ const RouteModal = (props) => {
       setOriginCoordinates({lat: places.lat, lng: places.lng})
     }
     setError("");
+    destinationInputRef.current.focus()
+    setShowOriginKeyboard(false)
+    setShowDestinationKeyboard(true)
+
   };
   const onPlaceDestinationChanged = (destination) => {
     if (destination !== null) {
@@ -250,7 +257,7 @@ const RouteModal = (props) => {
 
       <div className="route-modal-top">
         <div className="route-modal-top-title">
-          <h3>Find your Public Transportation Route within Quezon City</h3>
+          <h3 style={{fontSize: "20px"}}>Find your Public Transportation Route within Quezon City</h3>
         </div>
 
         <div className="route-modal-search">
@@ -396,8 +403,8 @@ const RouteModal = (props) => {
             <div className="route-modal-bottom-nonexist">
               <img
                 className="route-modal-bottom-placeholder"
-                src={routePlaceholder}
-                alt="route"
+                src={loadingPng}
+                alt="loading"
               ></img>
               <p>Calculating your route, just a moment...</p>
             </div>
@@ -422,7 +429,7 @@ const RouteModal = (props) => {
                       <button onClick={handleReset} className="route-modal-btn-reset">Reset</button>
                     </div>
                   </div>
-                  <div style={{marginLeft: "10px", fontSize: "14px"}}>Note: ETA may vary depending on real-time traffic</div>
+                  <div style={{marginLeft: "10px", fontSize: "14px"}}>Note: ETA may vary depending on traffic and PUV's waiting time</div>
                   <div>
                     <RouteList 
                       routes={routes} 

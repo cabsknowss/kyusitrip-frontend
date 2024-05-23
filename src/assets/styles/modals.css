@@ -132,11 +132,12 @@ input {
 }
 
 .route-modal-combo-box {
-  height: 40px;
+  height: 60px;
   width: 320px;
   padding: 10px;
   border-color: black;
   border-width: 1px;
+  font-size: 18px;
 }
 
 .route-modal-pin-location {
@@ -151,7 +152,7 @@ input {
   background-color: #880015;
   color: #fff;
   font-size: 12px;
-  height: 40px;
+  height: 60px;
   width: 80px;
   border: 0;
   border-radius: 5px;
@@ -187,11 +188,11 @@ input {
   color: #ffffff;
   border: none;
   border-radius: 10px;
-  width: 55%;
-  height: 50px;
+  width: 70%;
+  height: 70px;
   padding: 7px 40px;
   transition: opacity 0.3s;
-  font-size: 12;
+  font-size: 18px;
 }
 
 .route-modal-btn:active {
@@ -323,7 +324,7 @@ input {
   transform: translateX(-50%);
   z-index: 1000;
   width: 100%; /* Increase the width */
-  max-width: 850px; /* Set a maximum width */
+  max-width: 1200px; /* Set a maximum width */
   height: auto; /* Allow the height to adjust based on content */
   font-size: 1rem; /* Increase the font size for larger keys */
   background-color: #880015; /* Background color of the keyboard */
@@ -342,4 +343,35 @@ input {
 .virtual-keyboard .hg-button:active {
   background-color: #880015; /* Darker green when the key is pressed */
   color: #fff;
+}
+
+.pac-container {
+  background-color: #fff; /* Change background color */
+  border-radius: 4px; /* Rounded corners */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Add shadow */
+  font-family: Arial, sans-serif; /* Change font family */
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+/* Style for each suggestion item */
+.pac-item {
+  padding: 10px; /* Add padding */
+  font-size: 16px; /* Change font size */
+  color: #333; /* Change text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  height: 90px;
+  align-content: center;
+}
+
+/* Style for the highlighted suggestion item */
+.pac-item-selected {
+  background-color: #880015; /* Background color on hover */
+  color: #fff; /* Text color on hover */
+}
+
+/* Style for the suggestion main text */
+.pac-item .pac-item-query {
+  font-weight: bold; /* Bold main text */
+  /* color: #880015; Change color */
+  font-size: 18px;
 }

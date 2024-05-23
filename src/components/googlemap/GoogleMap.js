@@ -6,6 +6,7 @@ import originIcon from '../../assets/img/map-origin.png'
 import destinationIcon from '../../assets/img/map-destination.png'
 import walkIcon from '../../assets/img/map-walk.png'
 import railIcon from '../../assets/img/map-rail.png'
+import jeepIcon from '../../assets/img/map-jeep.png'
 import trafficIcon from '../../assets/img/traffic-jam-icon.svg'
 import accidentIcon from '../../assets/img/accident-icon.svg'
 import repairIcon from '../../assets/img/road-repair-icon.svg'
@@ -54,10 +55,18 @@ const Map = (props) => {
   // ------------------------------------------------------------ //
   // Icons in Map based on mode of transpo
   // ------------------------------------------------------------ //
-  const modeIcons = {
-    "WALK": `${walkIcon}`,
-    "BUS": `${busIcon}`,
-    "RAIL": `${railIcon}`,
+  const modeIcons = (leg) => {
+    if (leg.mode === "WALK") {
+      return `${walkIcon}`
+    } else if (leg.mode === "RAIL") {
+      return `${railIcon}`
+    } else if (leg.mode === "BUS") {
+      if (leg.route.gtfsId.includes("PUJ")) {
+        return `${jeepIcon}`
+      } else {
+        return `${busIcon}`
+      }
+    }
   };
 
 
@@ -127,7 +136,7 @@ const Map = (props) => {
           key={index}
           position={{ lat: leg.from.lat, lng: leg.from.lon }}
           icon={{
-            url: modeIcons[leg.mode],
+            url: modeIcons(leg),
             scaledSize: new google.maps.Size(35, 35)
           }}
         />
@@ -311,6 +320,7 @@ const Map = (props) => {
   // Report Modal - Callback function when marking a location on map
   // ------------------------------------------------------------ //
   const mapClickHandler = async (event) => {
+    console.log("test")
     if (isMarkLocation) {
       const lat = event.latLng.lat();
       const lng = event.latLng.lng();

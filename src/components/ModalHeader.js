@@ -11,17 +11,17 @@ const ModalHeader = ({ title, isRoute = true }) => {
             <img className='header-logo' src={modalLogo} alt="logo" />
           </div>
           <div>
-            <h2><span>Kyusi</span>Trip</h2>
+            <h2 style={{fontSize: "30px"}}><span>Kyusi</span>Trip</h2>
           </div>
         </div>
         <div className='header-modal-col2'>
           <div>
-            {isRoute ? (<h4>Kyusi<span>{ title }</span></h4>)
+            {isRoute ? (<h4 style={{fontSize: "20px"}}>Kyusi<span>{ title }</span></h4>)
             : <h4><span>{ title }</span></h4>
             }
           </div>
           <div>
-            <p>Optimized Routes, Save Time</p>
+            <p>Accurate Routes, Save Time</p>
           </div>
         </div>
       </div>
