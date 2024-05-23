@@ -336,9 +336,10 @@ input {
   font-size: 1.2em; /* Increase the font size of each key */
   margin: 0 5px; /* Add some margin between keys */
   color: #880015;
-  background-color: #880015;
+  background-color: #fff;
 }
 
 .virtual-keyboard .hg-button:active {
-  background-color: #45a049; /* Darker green when the key is pressed */
+  background-color: #880015; /* Darker green when the key is pressed */
+  color: #fff;
 }
