@@ -18,6 +18,9 @@ KyusiTrip is an infoboard system designed to facilitate public transit navigatio
 
 - KyusiTrip can be accessed through [KyusiTrip](https://cabsknows.github.io/kyusitrip-frontend-github/)
 - This repository is not updated, the updated and deployed repository is in another account.
+- Frontend: https://github.com/cabsknowss/kyusitrip-frontend
+- Backend: https://github.com/cabsknowss/kyusitrip-backend
+- Note that these repositories are not updated and are not deployed. The original repository is currently in private.
 
 ## Features
 
